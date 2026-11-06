@@ -1,0 +1,8 @@
+# The full Anthropic Economic Index CSV is about 220 MB, too big for GitHub.
+# scripts/build_data.py reads it locally and writes the small file in data/.
+aei_*.csv
+
+.DS_Store
+__pycache__/
+.ruff_cache/
+.claude/
