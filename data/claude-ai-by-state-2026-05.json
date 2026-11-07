@@ -1,5 +1,10 @@
 {
-  "metric_id": "usage_per_capita_index",
+  "metric_ids": [
+    "usage_per_capita_index",
+    "use_case_work_pct",
+    "use_case_personal_pct",
+    "use_case_coursework_pct"
+  ],
   "period": {
     "start": "2026-05-01",
     "end_exclusive": "2026-06-01",
@@ -13,26 +18,31 @@
     "license": "CC BY",
     "url": "https://www.anthropic.com/research/economic-index-june-2026-report"
   },
-  "tiers": [
+  "bands": [
     {
-      "id": "leading",
-      "label": "Leading",
-      "note": "Top 25%"
+      "id": "less_than_half",
+      "label": "Less than half",
+      "range": "Under 0.5"
     },
     {
-      "id": "upper_middle",
-      "label": "Upper middle",
-      "note": "Second 25%"
+      "id": "below",
+      "label": "Below 1.0",
+      "range": "0.5 to 1"
     },
     {
-      "id": "lower_middle",
-      "label": "Lower middle",
-      "note": "Third 25%"
+      "id": "even",
+      "label": "At 1.0",
+      "range": "1.0"
     },
     {
-      "id": "emerging",
-      "label": "Emerging",
-      "note": "Bottom 25%"
+      "id": "above",
+      "label": "Above 1.0",
+      "range": "1 to 2"
+    },
+    {
+      "id": "more_than_double",
+      "label": "More than double",
+      "range": "Over 2"
     }
   ],
   "states": [
@@ -42,7 +52,10 @@
       "fips": "11",
       "index": 3.32,
       "rank": 1,
-      "tier": "leading"
+      "band": "more_than_double",
+      "work_pct": 44.42,
+      "personal_pct": 42.68,
+      "coursework_pct": 12.9
     },
     {
       "code": "CA",
@@ -50,7 +63,10 @@
       "fips": "06",
       "index": 1.62,
       "rank": 2,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 41.52,
+      "personal_pct": 47.77,
+      "coursework_pct": 10.7
     },
     {
       "code": "NY",
@@ -58,7 +74,10 @@
       "fips": "36",
       "index": 1.55,
       "rank": 3,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 40.21,
+      "personal_pct": 49.31,
+      "coursework_pct": 10.48
     },
     {
       "code": "WA",
@@ -66,7 +85,10 @@
       "fips": "53",
       "index": 1.51,
       "rank": 4,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 36.22,
+      "personal_pct": 54.28,
+      "coursework_pct": 9.5
     },
     {
       "code": "MA",
@@ -74,7 +96,10 @@
       "fips": "25",
       "index": 1.42,
       "rank": 5,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 39.05,
+      "personal_pct": 48.46,
+      "coursework_pct": 12.48
     },
     {
       "code": "CO",
@@ -82,7 +107,10 @@
       "fips": "08",
       "index": 1.41,
       "rank": 6,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 43.88,
+      "personal_pct": 50.67,
+      "coursework_pct": 5.46
     },
     {
       "code": "UT",
@@ -90,7 +118,10 @@
       "fips": "49",
       "index": 1.21,
       "rank": 7,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 44.27,
+      "personal_pct": 50.85,
+      "coursework_pct": 4.88
     },
     {
       "code": "HI",
@@ -98,7 +129,10 @@
       "fips": "15",
       "index": 1.14,
       "rank": 8,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 42.4,
+      "personal_pct": 50.88,
+      "coursework_pct": 6.72
     },
     {
       "code": "NV",
@@ -106,7 +140,10 @@
       "fips": "32",
       "index": 1.13,
       "rank": 9,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 43.21,
+      "personal_pct": 48.98,
+      "coursework_pct": 7.81
     },
     {
       "code": "OR",
@@ -114,7 +151,10 @@
       "fips": "41",
       "index": 1.1,
       "rank": 10,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 37.82,
+      "personal_pct": 52.87,
+      "coursework_pct": 9.3
     },
     {
       "code": "MD",
@@ -122,7 +162,10 @@
       "fips": "24",
       "index": 1.09,
       "rank": 11,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 39.83,
+      "personal_pct": 49.56,
+      "coursework_pct": 10.61
     },
     {
       "code": "CT",
@@ -130,7 +173,10 @@
       "fips": "09",
       "index": 1.07,
       "rank": 12,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 38.93,
+      "personal_pct": 50.36,
+      "coursework_pct": 10.7
     },
     {
       "code": "VA",
@@ -138,7 +184,10 @@
       "fips": "51",
       "index": 1.07,
       "rank": 12,
-      "tier": "leading"
+      "band": "above",
+      "work_pct": 40.13,
+      "personal_pct": 49.59,
+      "coursework_pct": 10.28
     },
     {
       "code": "DE",
@@ -146,7 +195,10 @@
       "fips": "10",
       "index": 1.05,
       "rank": 14,
-      "tier": "upper_middle"
+      "band": "above",
+      "work_pct": 35.87,
+      "personal_pct": 55.22,
+      "coursework_pct": 8.91
     },
     {
       "code": "FL",
@@ -154,7 +206,10 @@
       "fips": "12",
       "index": 1.05,
       "rank": 14,
-      "tier": "upper_middle"
+      "band": "above",
+      "work_pct": 47.88,
+      "personal_pct": 46.61,
+      "coursework_pct": 5.51
     },
     {
       "code": "NJ",
@@ -162,7 +217,10 @@
       "fips": "34",
       "index": 1.02,
       "rank": 16,
-      "tier": "upper_middle"
+      "band": "above",
+      "work_pct": 41.66,
+      "personal_pct": 48.55,
+      "coursework_pct": 9.79
     },
     {
       "code": "IL",
@@ -170,7 +228,10 @@
       "fips": "17",
       "index": 1.0,
       "rank": 17,
-      "tier": "upper_middle"
+      "band": "even",
+      "work_pct": 37.89,
+      "personal_pct": 50.62,
+      "coursework_pct": 11.49
     },
     {
       "code": "RI",
@@ -178,7 +239,10 @@
       "fips": "44",
       "index": 0.96,
       "rank": 18,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 40.16,
+      "personal_pct": 46.28,
+      "coursework_pct": 13.55
     },
     {
       "code": "AZ",
@@ -186,7 +250,10 @@
       "fips": "04",
       "index": 0.95,
       "rank": 19,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 43.76,
+      "personal_pct": 49.09,
+      "coursework_pct": 7.15
     },
     {
       "code": "TX",
@@ -194,7 +261,10 @@
       "fips": "48",
       "index": 0.95,
       "rank": 19,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 43.16,
+      "personal_pct": 49.66,
+      "coursework_pct": 7.18
     },
     {
       "code": "GA",
@@ -202,7 +272,10 @@
       "fips": "13",
       "index": 0.93,
       "rank": 21,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 43.21,
+      "personal_pct": 49.81,
+      "coursework_pct": 6.98
     },
     {
       "code": "NH",
@@ -210,7 +283,10 @@
       "fips": "33",
       "index": 0.88,
       "rank": 22,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 40.02,
+      "personal_pct": 47.84,
+      "coursework_pct": 12.14
     },
     {
       "code": "NC",
@@ -218,7 +294,10 @@
       "fips": "37",
       "index": 0.88,
       "rank": 22,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 41.5,
+      "personal_pct": 51.3,
+      "coursework_pct": 7.2
     },
     {
       "code": "VT",
@@ -226,7 +305,10 @@
       "fips": "50",
       "index": 0.87,
       "rank": 24,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 41.11,
+      "personal_pct": 47.64,
+      "coursework_pct": 11.25
     },
     {
       "code": "MN",
@@ -234,7 +316,10 @@
       "fips": "27",
       "index": 0.81,
       "rank": 25,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 38.24,
+      "personal_pct": 54.14,
+      "coursework_pct": 7.62
     },
     {
       "code": "PA",
@@ -242,7 +327,10 @@
       "fips": "42",
       "index": 0.8,
       "rank": 26,
-      "tier": "upper_middle"
+      "band": "below",
+      "work_pct": 38.07,
+      "personal_pct": 51.75,
+      "coursework_pct": 10.18
     },
     {
       "code": "MO",
@@ -250,7 +338,10 @@
       "fips": "29",
       "index": 0.7,
       "rank": 27,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 40.81,
+      "personal_pct": 52.6,
+      "coursework_pct": 6.59
     },
     {
       "code": "TN",
@@ -258,7 +349,10 @@
       "fips": "47",
       "index": 0.69,
       "rank": 28,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 43.56,
+      "personal_pct": 50.67,
+      "coursework_pct": 5.77
     },
     {
       "code": "ID",
@@ -266,7 +360,10 @@
       "fips": "16",
       "index": 0.68,
       "rank": 29,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 44.48,
+      "personal_pct": 48.76,
+      "coursework_pct": 6.76
     },
     {
       "code": "ME",
@@ -274,7 +371,10 @@
       "fips": "23",
       "index": 0.65,
       "rank": 30,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 39.89,
+      "personal_pct": 51.34,
+      "coursework_pct": 8.78
     },
     {
       "code": "NE",
@@ -282,7 +382,10 @@
       "fips": "31",
       "index": 0.63,
       "rank": 31,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 37.96,
+      "personal_pct": 54.72,
+      "coursework_pct": 7.32
     },
     {
       "code": "IN",
@@ -290,7 +393,10 @@
       "fips": "18",
       "index": 0.61,
       "rank": 32,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 37.21,
+      "personal_pct": 51.29,
+      "coursework_pct": 11.5
     },
     {
       "code": "MI",
@@ -298,7 +404,10 @@
       "fips": "26",
       "index": 0.61,
       "rank": 32,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 40.0,
+      "personal_pct": 53.28,
+      "coursework_pct": 6.72
     },
     {
       "code": "OH",
@@ -306,7 +415,10 @@
       "fips": "39",
       "index": 0.59,
       "rank": 34,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 39.95,
+      "personal_pct": 52.75,
+      "coursework_pct": 7.29
     },
     {
       "code": "WI",
@@ -314,7 +426,10 @@
       "fips": "55",
       "index": 0.59,
       "rank": 34,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 35.89,
+      "personal_pct": 54.17,
+      "coursework_pct": 9.94
     },
     {
       "code": "MT",
@@ -322,7 +437,10 @@
       "fips": "30",
       "index": 0.58,
       "rank": 36,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 46.11,
+      "personal_pct": 47.99,
+      "coursework_pct": 5.9
     },
     {
       "code": "OK",
@@ -330,7 +448,10 @@
       "fips": "40",
       "index": 0.53,
       "rank": 37,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 38.58,
+      "personal_pct": 54.0,
+      "coursework_pct": 7.42
     },
     {
       "code": "AK",
@@ -338,7 +459,10 @@
       "fips": "02",
       "index": 0.51,
       "rank": 38,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 41.64,
+      "personal_pct": 54.88,
+      "coursework_pct": 3.48
     },
     {
       "code": "SC",
@@ -346,7 +470,10 @@
       "fips": "45",
       "index": 0.51,
       "rank": 38,
-      "tier": "lower_middle"
+      "band": "below",
+      "work_pct": 47.05,
+      "personal_pct": 47.67,
+      "coursework_pct": 5.28
     },
     {
       "code": "NM",
@@ -354,7 +481,10 @@
       "fips": "35",
       "index": 0.49,
       "rank": 40,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 38.36,
+      "personal_pct": 52.89,
+      "coursework_pct": 8.75
     },
     {
       "code": "KS",
@@ -362,7 +492,10 @@
       "fips": "20",
       "index": 0.48,
       "rank": 41,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 37.22,
+      "personal_pct": 53.07,
+      "coursework_pct": 9.71
     },
     {
       "code": "LA",
@@ -370,7 +503,10 @@
       "fips": "22",
       "index": 0.48,
       "rank": 41,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 40.66,
+      "personal_pct": 50.4,
+      "coursework_pct": 8.94
     },
     {
       "code": "AL",
@@ -378,7 +514,10 @@
       "fips": "01",
       "index": 0.47,
       "rank": 43,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 40.57,
+      "personal_pct": 53.81,
+      "coursework_pct": 5.62
     },
     {
       "code": "WY",
@@ -386,7 +525,10 @@
       "fips": "56",
       "index": 0.43,
       "rank": 44,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 39.26,
+      "personal_pct": 53.47,
+      "coursework_pct": 7.28
     },
     {
       "code": "IA",
@@ -394,7 +536,10 @@
       "fips": "19",
       "index": 0.41,
       "rank": 45,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 37.65,
+      "personal_pct": 47.73,
+      "coursework_pct": 14.61
     },
     {
       "code": "AR",
@@ -402,7 +547,10 @@
       "fips": "05",
       "index": 0.39,
       "rank": 46,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 41.16,
+      "personal_pct": 52.53,
+      "coursework_pct": 6.31
     },
     {
       "code": "KY",
@@ -410,7 +558,10 @@
       "fips": "21",
       "index": 0.39,
       "rank": 46,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 40.04,
+      "personal_pct": 53.2,
+      "coursework_pct": 6.76
     },
     {
       "code": "ND",
@@ -418,7 +569,10 @@
       "fips": "38",
       "index": 0.37,
       "rank": 48,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 38.33,
+      "personal_pct": 49.71,
+      "coursework_pct": 11.96
     },
     {
       "code": "SD",
@@ -426,7 +580,10 @@
       "fips": "46",
       "index": 0.37,
       "rank": 48,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 45.78,
+      "personal_pct": 45.78,
+      "coursework_pct": 8.45
     },
     {
       "code": "MS",
@@ -434,7 +591,10 @@
       "fips": "28",
       "index": 0.28,
       "rank": 50,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 41.08,
+      "personal_pct": 49.51,
+      "coursework_pct": 9.4
     },
     {
       "code": "WV",
@@ -442,7 +602,10 @@
       "fips": "54",
       "index": 0.25,
       "rank": 51,
-      "tier": "emerging"
+      "band": "less_than_half",
+      "work_pct": 40.85,
+      "personal_pct": 50.24,
+      "coursework_pct": 8.91
     }
   ]
 }

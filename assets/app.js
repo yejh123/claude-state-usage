@@ -1,13 +1,14 @@
 /*
- * Renders the Claude.ai usage per capita map, its key, the top 10 ranking and
- * the full table from data/usage-per-capita-2026-05.json.
+ * Renders the Claude.ai state story from data/claude-ai-by-state-2026-05.json:
+ * the map key, the labeled map, the top 10 ranking, the use-case chart and the
+ * full table.
  *
  * Map shapes come from us-atlas (pre-projected Albers USA), so d3.geoPath runs
  * with no projection. d3 and topojson-client are loaded as globals by
  * index.html before this module runs.
  */
 
-const DATA_URL = "data/usage-per-capita-2026-05.json";
+const DATA_URL = "data/claude-ai-by-state-2026-05.json";
 const ATLAS_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-albers-10m.json";
 const ATLAS_INTEGRITY = "sha384-vyqp+z8MYIFZU8V1K7x8eeS6f4qq+zp2l6YqE81ZLpCykssi+zpvpQSkQNRqIaJb";
 
@@ -16,18 +17,51 @@ const TOP_RANKING_COUNT = 10;
 const REFERENCE_INDEX = 1;
 const VALUE_DECIMALS = 2;
 const REFERENCE_DECIMALS = 1;
+const SHARE_DECIMALS = 1;
+const PERCENT_SIGN = "%";
+
+const DC_CODE = "DC";
+// Shorter names for labels and the map key, where the full name is too long.
+const SHORT_NAMES = new Map([[DC_CODE, "D.C."]]);
 
 // States too small to hover or tap reliably on a phone, listed north to south.
 const SMALL_STATE_CODES = ["VT", "NH", "MA", "RI", "CT", "NJ", "DE", "MD", "DC"];
 // States drawn as a dot because their shape is only a few pixels wide.
-const DOT_STATE_CODES = ["DC"];
+const DOT_STATE_CODES = [DC_CODE];
 
-// Map geometry, in the atlas's 975 x 610 coordinate space.
+// Labels drawn on the map. `offsetPx` moves the label from the state's centroid
+// in screen pixels, so labels stay the same distance from their state at any
+// map width. `placement` says which way the label extends from that point; a
+// leader line joins label and state when the label sits outside the state.
+// `compactName` is the AP abbreviation shown when the map is narrow.
+const MAP_LABELS = [
+  { code: "CA", compactName: "Calif.", offsetPx: [0, 6], placement: "center", hasLeader: false },
+  { code: "DC", compactName: "D.C.", offsetPx: [40, 26], placement: "right", hasLeader: true },
+  { code: "WV", compactName: "W.Va.", offsetPx: [-28, 28], placement: "left", hasLeader: true },
+];
+const PLACEMENT_SHIFTS = { right: 0, center: 0.5, left: 1 };
+// Space between a state's centroid and the start of its leader line.
+const LEADER_START_GAP_PX = 5;
+
+// Map geometry, in the atlas's coordinate space.
 const MAP_PADDING = 4;
 const DOT_RADIUS = 5;
 const DOT_HIT_RADIUS = 14;
 const LOCATOR_RADIUS = 20;
 const HIGHLIGHT_STROKE_CLASSES = ["map-highlight-outer", "map-highlight-inner"];
+
+// The two groups the use-case chart compares, and the parts of each bar.
+const USE_GROUPS = [
+  { label: "Above 1.0", isMember: (state) => state.index > REFERENCE_INDEX },
+  { label: "Below 1.0", isMember: (state) => state.index < REFERENCE_INDEX },
+];
+const USE_CASES = [
+  { id: "work", field: "work_pct", label: "Work" },
+  { id: "personal", field: "personal_pct", label: "Personal" },
+  { id: "coursework", field: "coursework_pct", label: "Coursework" },
+];
+// Room a share label keeps between its text and the right end of its bar part.
+const PART_LABEL_END_GAP_PX = 4;
 
 const TOOLTIP_OFFSET_PX = 14;
 const MOUSE_POINTER_TYPE = "mouse";
@@ -60,6 +94,40 @@ function formatIndex(indexValue) {
 }
 
 /**
+ * Format a percentage, rounded to a whole number unless decimals are asked for.
+ * @param {number} percentValue - A share from 0 to 100.
+ * @param {number} [decimals] - Digits after the point.
+ * @returns {string} For example "41%".
+ */
+function formatPercent(percentValue, decimals = 0) {
+  return `${percentValue.toFixed(decimals)}${PERCENT_SIGN}`;
+}
+
+/**
+ * Give the name used in labels and the map key, for example "D.C.".
+ * @param {object} state - One state record.
+ * @returns {string} The short name, or the full name when there is none.
+ */
+function shortName(state) {
+  return SHORT_NAMES.get(state.code) ?? state.name;
+}
+
+/**
+ * Describe a set of places in a few words, for example "15 states and D.C.".
+ * @param {object[]} states - State records.
+ * @returns {string} The name for one place, otherwise a count.
+ */
+function describePlaces(states) {
+  if (states.length === 1) {
+    return shortName(states[0]);
+  }
+  const hasDc = states.some((state) => state.code === DC_CODE);
+  const stateCount = hasDc ? states.length - 1 : states.length;
+  const stateText = `${stateCount} ${stateCount === 1 ? "state" : "states"}`;
+  return hasDc ? `${stateText} and ${SHORT_NAMES.get(DC_CODE)}` : stateText;
+}
+
+/**
  * Create an element with a class name and optional text.
  * @param {string} tagName - HTML tag to create.
  * @param {string} className - Class attribute value.
@@ -76,13 +144,13 @@ function createElement(tagName, className, textContent) {
 }
 
 /**
- * Create a color swatch for a rank group.
- * @param {string} tierId - Group id, for example "leading".
+ * Create a color swatch for a band.
+ * @param {string} bandId - Band id, for example "above".
  * @returns {HTMLElement} A decorative swatch element.
  */
-function createSwatch(tierId) {
+function createSwatch(bandId) {
   const swatch = createElement("span", "swatch");
-  swatch.dataset.tier = tierId;
+  swatch.dataset.band = bandId;
   swatch.setAttribute("aria-hidden", "true");
   return swatch;
 }
@@ -102,30 +170,27 @@ function createSvgElement(tagName, attributes) {
 }
 
 /**
- * Index the dataset for lookups and derive per-group value ranges.
+ * Index the dataset for lookups.
  * @param {object} dataset - Parsed JSON data file.
- * @returns {object} Lookups by code, FIPS and tier, plus rank tie counts.
+ * @returns {object} Lookups by code, FIPS and band, plus rank tie counts.
  */
 function indexDataset(dataset) {
-  const statesByCode = new Map(dataset.states.map((state) => [state.code, state]));
-  const statesByFips = new Map(dataset.states.map((state) => [state.fips, state]));
-  const tiersById = new Map(dataset.tiers.map((tier) => [tier.id, tier]));
   const stateCountByRank = new Map();
   for (const state of dataset.states) {
     stateCountByRank.set(state.rank, (stateCountByRank.get(state.rank) ?? 0) + 1);
   }
   return {
     states: dataset.states,
-    tiers: dataset.tiers,
-    statesByCode,
-    statesByFips,
-    tiersById,
+    bands: dataset.bands,
+    statesByCode: new Map(dataset.states.map((state) => [state.code, state])),
+    statesByFips: new Map(dataset.states.map((state) => [state.fips, state])),
+    bandsById: new Map(dataset.bands.map((band) => [band.id, band])),
     stateCountByRank,
   };
 }
 
 /**
- * Describe a state's rank and group, for example "Rank 12 of 51 (tied) · Leading".
+ * Describe a state's band and rank, for example "Above 1.0 · Rank 12 of 51 (tied)".
  * @param {object} state - One state record.
  * @param {object} lookups - Result of indexDataset.
  * @returns {string} A short description.
@@ -133,29 +198,29 @@ function indexDataset(dataset) {
 function describeRank(state, lookups) {
   const isTied = lookups.stateCountByRank.get(state.rank) > 1;
   const tieNote = isTied ? " (tied)" : "";
-  const tierLabel = lookups.tiersById.get(state.tier).label;
-  return `Rank ${state.rank} of ${lookups.states.length}${tieNote} · ${tierLabel}`;
+  const bandLabel = lookups.bandsById.get(state.band).label;
+  return `${bandLabel} · Rank ${state.rank} of ${lookups.states.length}${tieNote}`;
 }
 
 /**
- * Fill the map key with each group's name, share and value range.
- * @param {HTMLElement} legendElement - The list element for the key.
+ * Fill the map key: one cell per band, low to high, with its range and members.
+ * @param {HTMLElement} listElement - The list element for the key.
  * @param {object} lookups - Result of indexDataset.
  */
-function renderLegend(legendElement, lookups) {
-  for (const tier of lookups.tiers) {
-    const tierValues = lookups.states.filter((state) => state.tier === tier.id).map((state) => state.index);
-    const rangeText = `${formatIndex(Math.min(...tierValues))} to ${formatIndex(Math.max(...tierValues))}`;
-
+function renderLegend(listElement, lookups) {
+  for (const band of lookups.bands) {
+    const members = lookups.states.filter((state) => state.band === band.id);
     const item = createElement("li", "legend-item");
-    const text = createElement("span", "legend-text");
-    text.append(
-      createElement("span", "legend-label", tier.label),
-      createElement("span", "legend-detail", tier.note),
-      createElement("span", "legend-detail", rangeText),
+    const bar = createElement("span", "legend-bar");
+    bar.dataset.band = band.id;
+    bar.setAttribute("aria-hidden", "true");
+    item.append(
+      bar,
+      createElement("span", "legend-range", band.range),
+      createElement("span", "legend-places", describePlaces(members)),
     );
-    item.append(createSwatch(tier.id), text);
-    legendElement.append(item);
+    item.setAttribute("aria-label", `${band.label} (${band.range}): ${describePlaces(members)}`);
+    listElement.append(item);
   }
 }
 
@@ -176,7 +241,7 @@ function renderRanking(rankingElement, lookups) {
     const row = createElement("li", "ranking-row");
     const track = createElement("span", "ranking-track");
     const bar = createElement("span", "ranking-bar");
-    bar.dataset.tier = state.tier;
+    bar.dataset.band = state.band;
     bar.style.setProperty("--value-share", String(state.index / maxIndex));
     track.append(bar, createElement("span", "ranking-value", formatIndex(state.index)));
     row.append(
@@ -189,36 +254,159 @@ function renderRanking(rankingElement, lookups) {
 }
 
 /**
+ * Average each use-case share over a group of states, each state counted equally.
+ * @param {object[]} states - State records in the group.
+ * @returns {Map<string, number>} Mean share by use-case id.
+ */
+function averageUseShares(states) {
+  return new Map(
+    USE_CASES.map((useCase) => [
+      useCase.id,
+      states.reduce((total, state) => total + state[useCase.field], 0) / states.length,
+    ]),
+  );
+}
+
+/**
+ * Fill the use-case key with one swatch per part, in bar order.
+ * @param {HTMLElement} legendElement - The list element for the key.
+ */
+function renderUseLegend(legendElement) {
+  for (const useCase of USE_CASES) {
+    const item = createElement("li", "use-legend-item");
+    const swatch = createElement("span", "use-swatch");
+    swatch.dataset.use = useCase.id;
+    swatch.setAttribute("aria-hidden", "true");
+    item.append(swatch, document.createTextNode(useCase.label));
+    legendElement.append(item);
+  }
+}
+
+/**
+ * Draw one segmented bar per group, split into work, personal and coursework.
+ * @param {HTMLElement} rowsElement - Container for the bars.
+ * @param {object} lookups - Result of indexDataset.
+ */
+function renderUseRows(rowsElement, lookups) {
+  for (const group of USE_GROUPS) {
+    const members = lookups.states.filter(group.isMember);
+    const placesText = describePlaces(members);
+    const shareById = averageUseShares(members);
+
+    const label = createElement("p", "use-row-label");
+    label.append(
+      createElement("span", "use-row-name", group.label),
+      createElement("span", "use-row-places", placesText),
+    );
+
+    const bar = createElement("div", "use-bar");
+    bar.setAttribute("role", "img");
+    const partDescriptions = USE_CASES.map(
+      (useCase) => `${useCase.label.toLowerCase()} ${formatPercent(shareById.get(useCase.id))}`,
+    );
+    bar.setAttribute("aria-label", `${group.label}, ${placesText}: ${partDescriptions.join(", ")}`);
+    bar.style.gridTemplateColumns = USE_CASES.map((useCase) => `${shareById.get(useCase.id)}fr`).join(" ");
+    for (const useCase of USE_CASES) {
+      const share = shareById.get(useCase.id);
+      const part = createElement("span", "use-part");
+      part.dataset.use = useCase.id;
+      part.dataset.share = formatPercent(share, SHARE_DECIMALS);
+      part.dataset.description = `${useCase.label} · ${group.label}, ${placesText}`;
+      part.append(createElement("span", "use-part-value", formatPercent(share)));
+      bar.append(part);
+    }
+
+    const row = createElement("div", "use-row");
+    row.append(label, bar);
+    rowsElement.append(row);
+  }
+}
+
+/**
+ * Show each part's share label only where it fits inside the part.
+ * @param {HTMLElement} rowsElement - Container for the bars.
+ */
+function fitUseLabels(rowsElement) {
+  for (const part of rowsElement.querySelectorAll(".use-part")) {
+    const valueElement = part.querySelector(".use-part-value");
+    valueElement.hidden = false;
+    const leftPadding = Number.parseFloat(getComputedStyle(part).paddingLeft);
+    valueElement.hidden = leftPadding + valueElement.offsetWidth + PART_LABEL_END_GAP_PX > part.clientWidth;
+  }
+}
+
+/**
  * Fill the full table with every state in rank order.
  * @param {HTMLElement} tableBody - The table's tbody element.
  * @param {object} lookups - Result of indexDataset.
  */
 function renderTable(tableBody, lookups) {
   for (const state of lookups.states) {
+    const bandCell = createElement("span", "band-cell");
+    const bandLabel = lookups.bandsById.get(state.band).label;
+    bandCell.append(createSwatch(state.band), document.createTextNode(bandLabel));
+    const bandColumn = document.createElement("td");
+    bandColumn.append(bandCell);
     const row = document.createElement("tr");
-    const groupCell = createElement("span", "group-cell");
-    groupCell.append(
-      createSwatch(state.tier),
-      document.createTextNode(lookups.tiersById.get(state.tier).label),
-    );
-    const groupColumn = document.createElement("td");
-    groupColumn.append(groupCell);
     row.append(
       createElement("td", "numeric", String(state.rank)),
       createElement("td", "", state.name),
       createElement("td", "numeric", formatIndex(state.index)),
-      groupColumn,
+      bandColumn,
+      createElement("td", "numeric", formatPercent(state.work_pct)),
     );
     tableBody.append(row);
   }
 }
 
 /**
- * Draw the state shapes, borders, dot markers and highlight overlay.
+ * Create a tooltip that sits beside a point and stays inside its frame.
+ * @param {HTMLElement} frameElement - Positioned container the tooltip is clamped to.
+ * @param {HTMLElement} tooltipElement - The tooltip element inside the frame.
+ * @returns {{show: Function, hide: Function}} Show it at a viewport point, or hide it.
+ */
+function createTooltip(frameElement, tooltipElement) {
+  function place(clientX, clientY) {
+    const frameBox = frameElement.getBoundingClientRect();
+    const pointX = clientX - frameBox.left;
+    const pointY = clientY - frameBox.top;
+    const tooltipWidth = tooltipElement.offsetWidth;
+    const tooltipHeight = tooltipElement.offsetHeight;
+
+    let left = pointX + TOOLTIP_OFFSET_PX;
+    if (left + tooltipWidth > frameBox.width) {
+      left = pointX - TOOLTIP_OFFSET_PX - tooltipWidth;
+    }
+    left = Math.min(Math.max(left, 0), Math.max(frameBox.width - tooltipWidth, 0));
+
+    let top = pointY - TOOLTIP_OFFSET_PX - tooltipHeight;
+    if (top < 0) {
+      top = pointY + TOOLTIP_OFFSET_PX;
+    }
+    tooltipElement.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
+  }
+
+  function show(contentElements, clientX, clientY) {
+    if (contentElements) {
+      tooltipElement.replaceChildren(...contentElements);
+    }
+    tooltipElement.hidden = false;
+    place(clientX, clientY);
+  }
+
+  function hide() {
+    tooltipElement.hidden = true;
+  }
+
+  return { show, hide };
+}
+
+/**
+ * Draw the state shapes, borders, dot markers, label leaders and highlight overlay.
  * @param {SVGSVGElement} svgElement - Target SVG.
  * @param {object} atlas - us-atlas TopoJSON with "states" and "nation" objects.
  * @param {object} lookups - Result of indexDataset.
- * @returns {object} Per-state centroids plus the highlight overlay elements.
+ * @returns {object} The view box, per-state paths and centroids, and the highlight overlay.
  */
 function renderMap(svgElement, atlas, lookups) {
   const { geoPath } = globalThis.d3;
@@ -226,13 +414,13 @@ function renderMap(svgElement, atlas, lookups) {
   const pathGenerator = geoPath();
 
   const [[minX, minY], [maxX, maxY]] = pathGenerator.bounds(feature(atlas, atlas.objects.nation));
-  const viewBox = [
-    minX - MAP_PADDING,
-    minY - MAP_PADDING,
-    maxX - minX + 2 * MAP_PADDING,
-    maxY - minY + 2 * MAP_PADDING,
-  ];
-  svgElement.setAttribute("viewBox", viewBox.join(" "));
+  const viewBox = {
+    x: minX - MAP_PADDING,
+    y: minY - MAP_PADDING,
+    width: maxX - minX + 2 * MAP_PADDING,
+    height: maxY - minY + 2 * MAP_PADDING,
+  };
+  svgElement.setAttribute("viewBox", [viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(" "));
 
   const stateGroup = createSvgElement("g", {});
   const pathByCode = new Map();
@@ -243,13 +431,14 @@ function renderMap(svgElement, atlas, lookups) {
       throw new Error(`Map shape ${shape.id} (${shape.properties.name}) has no matching row in ${DATA_URL}.`);
     }
     const pathData = pathGenerator(shape);
-    const statePath = createSvgElement("path", {
-      d: pathData,
-      class: "map-state",
-      "data-code": state.code,
-      "data-tier": state.tier,
-    });
-    stateGroup.append(statePath);
+    stateGroup.append(
+      createSvgElement("path", {
+        d: pathData,
+        class: "map-state",
+        "data-code": state.code,
+        "data-band": state.band,
+      }),
+    );
     pathByCode.set(state.code, pathData);
     centroidByCode.set(state.code, pathGenerator.centroid(shape));
   }
@@ -262,14 +451,13 @@ function renderMap(svgElement, atlas, lookups) {
   const dotGroup = createSvgElement("g", {});
   for (const code of DOT_STATE_CODES) {
     const [centerX, centerY] = centroidByCode.get(code);
-    const tier = lookups.statesByCode.get(code).tier;
     dotGroup.append(
       createSvgElement("circle", {
         cx: centerX,
         cy: centerY,
         r: DOT_RADIUS,
         class: "map-dot",
-        "data-tier": tier,
+        "data-band": lookups.statesByCode.get(code).band,
       }),
       createSvgElement("circle", {
         cx: centerX,
@@ -297,17 +485,122 @@ function renderMap(svgElement, atlas, lookups) {
   );
 
   svgElement.replaceChildren(stateGroup, borders, highlightLayer, dotGroup, locatorLayer);
-  return { pathByCode, centroidByCode, highlightLayer, highlightOutlines, locatorLayer };
+  return { viewBox, pathByCode, centroidByCode, highlightLayer, highlightOutlines, locatorLayer };
+}
+
+/**
+ * Create the name-and-value labels and their leader lines. Positions are set by layoutMapLabels.
+ * @param {HTMLElement} labelsElement - HTML overlay that holds the labels.
+ * @param {SVGSVGElement} leadersElement - SVG overlay, in screen pixels, that holds the leader lines.
+ * @param {object} lookups - Result of indexDataset.
+ * @returns {object[]} One entry per label: its settings, element and leader line (or null).
+ */
+function renderMapLabels(labelsElement, leadersElement, lookups) {
+  return MAP_LABELS.map((mapLabel) => {
+    const state = lookups.statesByCode.get(mapLabel.code);
+    const label = createElement("span", "map-label");
+    label.dataset.placement = mapLabel.placement;
+    label.append(
+      createElement("span", "map-label-name map-label-name-full", shortName(state)),
+      createElement("span", "map-label-name map-label-name-compact", mapLabel.compactName),
+      createElement("span", "map-label-value", formatIndex(state.index)),
+    );
+    labelsElement.append(label);
+
+    const leader = mapLabel.hasLeader ? createSvgElement("line", {}) : null;
+    if (leader) {
+      leadersElement.append(leader);
+    }
+    return { mapLabel, label, leader };
+  });
+}
+
+/**
+ * Work out where a label's box goes, kept inside the map frame.
+ * @param {{x: number, y: number}} anchor - The state's centroid, in frame pixels.
+ * @param {object} mapLabel - One entry of MAP_LABELS.
+ * @param {object} sizes - The label's and the frame's width and height, in pixels.
+ * @returns {{left: number, top: number, right: number, bottom: number}} The box, in frame pixels.
+ */
+function placeLabelBox(anchor, mapLabel, sizes) {
+  const [offsetX, offsetY] = mapLabel.offsetPx;
+  const preferredLeft = anchor.x + offsetX - sizes.labelWidth * PLACEMENT_SHIFTS[mapLabel.placement];
+  const preferredTop = anchor.y + offsetY - sizes.labelHeight / 2;
+  const left = Math.min(Math.max(preferredLeft, 0), sizes.frameWidth - sizes.labelWidth);
+  const top = Math.min(Math.max(preferredTop, 0), sizes.frameHeight - sizes.labelHeight);
+  return { left, top, right: left + sizes.labelWidth, bottom: top + sizes.labelHeight };
+}
+
+/**
+ * Draw a leader from just outside a state's centroid to the nearest point of its label.
+ * @param {SVGLineElement} leader - The line to move.
+ * @param {{x: number, y: number}} anchor - The state's centroid, in frame pixels.
+ * @param {object} box - The label's box from placeLabelBox.
+ */
+function drawLeader(leader, anchor, box) {
+  const endX = Math.min(Math.max(anchor.x, box.left), box.right);
+  const endY = Math.min(Math.max(anchor.y, box.top), box.bottom);
+  const length = Math.hypot(endX - anchor.x, endY - anchor.y);
+  const isTooShort = length <= LEADER_START_GAP_PX;
+  leader.setAttribute("visibility", isTooShort ? "hidden" : "visible");
+  if (isTooShort) {
+    return;
+  }
+  const gapShare = LEADER_START_GAP_PX / length;
+  leader.setAttribute("x1", String(anchor.x + (endX - anchor.x) * gapShare));
+  leader.setAttribute("y1", String(anchor.y + (endY - anchor.y) * gapShare));
+  leader.setAttribute("x2", String(endX));
+  leader.setAttribute("y2", String(endY));
+}
+
+/**
+ * Position every map label and leader for the map's current size.
+ * @param {object[]} labelEntries - Result of renderMapLabels.
+ * @param {object} renderedMap - Result of renderMap.
+ * @param {HTMLElement} frameElement - The map frame the labels are positioned in.
+ */
+function layoutMapLabels(labelEntries, renderedMap, frameElement) {
+  const { viewBox, centroidByCode } = renderedMap;
+  const frameWidth = frameElement.clientWidth;
+  const frameHeight = frameElement.clientHeight;
+  const pixelsPerUnit = frameWidth / viewBox.width;
+  for (const { mapLabel, label, leader } of labelEntries) {
+    const [centerX, centerY] = centroidByCode.get(mapLabel.code);
+    const anchor = { x: (centerX - viewBox.x) * pixelsPerUnit, y: (centerY - viewBox.y) * pixelsPerUnit };
+    const sizes = { labelWidth: label.offsetWidth, labelHeight: label.offsetHeight, frameWidth, frameHeight };
+    const box = placeLabelBox(anchor, mapLabel, sizes);
+    label.style.transform = `translate(${Math.round(box.left)}px, ${Math.round(box.top)}px)`;
+    if (leader) {
+      drawLeader(leader, anchor, box);
+    }
+  }
+}
+
+/**
+ * Build the tooltip content for one state.
+ * @param {object} state - One state record.
+ * @param {object} lookups - Result of indexDataset.
+ * @returns {HTMLElement[]} Elements for the tooltip.
+ */
+function describeStateForTooltip(state, lookups) {
+  const meta = createElement("p", "tooltip-meta");
+  meta.append(createSwatch(state.band), document.createTextNode(describeRank(state, lookups)));
+  return [
+    createElement("p", "tooltip-name", state.name),
+    createElement("p", "tooltip-value", formatIndex(state.index)),
+    meta,
+    createElement("p", "tooltip-note", `${formatPercent(state.work_pct)} of conversations for work`),
+  ];
 }
 
 /**
  * Create the controller that shows one state's tooltip and map highlight.
- * @param {object} mapView - Elements and lookups for the map (frame, svg, tooltip, rendered map).
+ * @param {object} mapView - Elements for the map (svg, tooltip, rendered map, buttons).
  * @param {object} lookups - Result of indexDataset.
  * @returns {{showAtPoint: Function, showAtState: Function, hide: Function}} The controller.
  */
 function createInspector(mapView, lookups) {
-  const { frameElement, svgElement, tooltipElement, renderedMap, buttonsByCode } = mapView;
+  const { svgElement, tooltip, renderedMap, buttonsByCode } = mapView;
   let activeCode = null;
 
   function setHighlight(code) {
@@ -327,46 +620,14 @@ function createInspector(mapView, lookups) {
     }
   }
 
-  function fillTooltip(state) {
-    const meta = createElement("p", "tooltip-meta");
-    meta.append(createSwatch(state.tier), document.createTextNode(describeRank(state, lookups)));
-    tooltipElement.replaceChildren(
-      createElement("p", "tooltip-name", state.name),
-      createElement("p", "tooltip-value", formatIndex(state.index)),
-      meta,
-    );
-  }
-
-  // Place the tooltip beside a point (in viewport pixels), flipping and
-  // clamping so it stays inside the map frame.
-  function positionTooltip(clientX, clientY) {
-    const frameBox = frameElement.getBoundingClientRect();
-    const pointX = clientX - frameBox.left;
-    const pointY = clientY - frameBox.top;
-    const tooltipWidth = tooltipElement.offsetWidth;
-    const tooltipHeight = tooltipElement.offsetHeight;
-
-    let left = pointX + TOOLTIP_OFFSET_PX;
-    if (left + tooltipWidth > frameBox.width) {
-      left = pointX - TOOLTIP_OFFSET_PX - tooltipWidth;
-    }
-    left = Math.min(Math.max(left, 0), Math.max(frameBox.width - tooltipWidth, 0));
-
-    let top = pointY - TOOLTIP_OFFSET_PX - tooltipHeight;
-    if (top < 0) {
-      top = pointY + TOOLTIP_OFFSET_PX;
-    }
-    tooltipElement.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
-  }
-
   function showAtPoint(code, clientX, clientY) {
-    if (code !== activeCode) {
-      fillTooltip(lookups.statesByCode.get(code));
+    const isNewState = code !== activeCode;
+    if (isNewState) {
       setHighlight(code);
       activeCode = code;
     }
-    tooltipElement.hidden = false;
-    positionTooltip(clientX, clientY);
+    const content = isNewState ? describeStateForTooltip(lookups.statesByCode.get(code), lookups) : null;
+    tooltip.show(content, clientX, clientY);
   }
 
   // Anchor the tooltip at a state's centroid, for keyboard focus and buttons.
@@ -378,7 +639,7 @@ function createInspector(mapView, lookups) {
 
   function hide() {
     activeCode = null;
-    tooltipElement.hidden = true;
+    tooltip.hide();
     renderedMap.highlightLayer.setAttribute("visibility", "hidden");
     renderedMap.locatorLayer.setAttribute("visibility", "hidden");
     for (const button of buttonsByCode.values()) {
@@ -406,7 +667,7 @@ function renderSmallStateButtons(containerElement, lookups) {
       "aria-label",
       `${state.name}: ${formatIndex(state.index)}. ${describeRank(state, lookups)}`,
     );
-    button.append(createSwatch(state.tier), document.createTextNode(code));
+    button.append(createSwatch(state.band), document.createTextNode(code));
     containerElement.append(button);
     buttonsByCode.set(code, button);
   }
@@ -423,11 +684,11 @@ function codeFromEvent(event) {
 }
 
 /**
- * Connect hover, tap, focus and keyboard events to the inspector.
+ * Connect hover, tap, focus and keyboard events on the map to the inspector.
  * @param {object} mapView - Elements for the map (svg and small-state container).
  * @param {object} inspector - Result of createInspector.
  */
-function wireInteractions(mapView, inspector) {
+function wireMapInteractions(mapView, inspector) {
   const { svgElement, buttonContainer } = mapView;
 
   svgElement.addEventListener("pointermove", (event) => {
@@ -499,6 +760,51 @@ function wireInteractions(mapView, inspector) {
 }
 
 /**
+ * Show a tooltip with the exact share when the reader hovers over or taps a bar part.
+ * @param {HTMLElement} rowsElement - Container for the bars.
+ * @param {object} tooltip - Result of createTooltip.
+ */
+function wireUseInteractions(rowsElement, tooltip) {
+  function showForEvent(event) {
+    const part = event.target.closest(".use-part");
+    if (!part) {
+      tooltip.hide();
+      return;
+    }
+    tooltip.show(
+      [
+        createElement("p", "tooltip-value", part.dataset.share),
+        createElement("p", "tooltip-meta", part.dataset.description),
+      ],
+      event.clientX,
+      event.clientY,
+    );
+  }
+
+  rowsElement.addEventListener("pointermove", (event) => {
+    if (event.pointerType === MOUSE_POINTER_TYPE) {
+      showForEvent(event);
+    }
+  });
+  rowsElement.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === MOUSE_POINTER_TYPE) {
+      tooltip.hide();
+    }
+  });
+  rowsElement.addEventListener("click", showForEvent);
+  document.addEventListener("pointerdown", (event) => {
+    if (!event.target.closest?.(".use-part")) {
+      tooltip.hide();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === ESCAPE_KEY) {
+      tooltip.hide();
+    }
+  });
+}
+
+/**
  * Show a page-level error message.
  * @param {string} message - Text for the reader.
  */
@@ -506,6 +812,19 @@ function showLoadError(message) {
   const errorElement = document.getElementById("load-error");
   errorElement.textContent = message;
   errorElement.hidden = false;
+}
+
+/**
+ * Draw the use-case chart and keep its share labels fitted as the page resizes.
+ * @param {object} lookups - Result of indexDataset.
+ */
+function initializeUseChart(lookups) {
+  const rowsElement = document.getElementById("use-rows");
+  renderUseLegend(document.getElementById("use-legend"));
+  renderUseRows(rowsElement, lookups);
+  new ResizeObserver(() => fitUseLabels(rowsElement)).observe(rowsElement);
+  const tooltip = createTooltip(document.getElementById("use-frame"), document.getElementById("use-tooltip"));
+  wireUseInteractions(rowsElement, tooltip);
 }
 
 /**
@@ -521,11 +840,17 @@ async function initializeMap(lookups) {
     }
     const atlas = await fetchJson(ATLAS_URL, { integrity: ATLAS_INTEGRITY });
     const renderedMap = renderMap(svgElement, atlas, lookups);
+    const labelEntries = renderMapLabels(
+      document.getElementById("map-labels"),
+      document.getElementById("map-leaders"),
+      lookups,
+    );
+    new ResizeObserver(() => layoutMapLabels(labelEntries, renderedMap, frameElement)).observe(frameElement);
     const buttonContainer = document.getElementById("small-state-buttons");
     const buttonsByCode = renderSmallStateButtons(buttonContainer, lookups);
-    const tooltipElement = document.getElementById("tooltip");
-    const mapView = { frameElement, svgElement, tooltipElement, renderedMap, buttonsByCode, buttonContainer };
-    wireInteractions(mapView, createInspector(mapView, lookups));
+    const tooltip = createTooltip(frameElement, document.getElementById("map-tooltip"));
+    const mapView = { svgElement, tooltip, renderedMap, buttonsByCode, buttonContainer };
+    wireMapInteractions(mapView, createInspector(mapView, lookups));
   } catch (error) {
     console.error(error);
     svgElement.remove();
@@ -545,8 +870,9 @@ async function initializePage() {
     showLoadError(DATA_LOAD_ERROR_MESSAGE);
     return;
   }
-  renderLegend(document.getElementById("legend"), lookups);
+  renderLegend(document.getElementById("legend-list"), lookups);
   renderRanking(document.getElementById("ranking"), lookups);
+  initializeUseChart(lookups);
   renderTable(document.getElementById("state-table-body"), lookups);
   await initializeMap(lookups);
 }

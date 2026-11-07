@@ -6,21 +6,18 @@
     <title>Claude.ai Use by State</title>
     <meta
       name="description"
-      content="Which US states use Claude.ai more than their population predicts? A map of Anthropic's usage per capita index for the 50 states and D.C., May 2026."
+      content="Washington, D.C., uses Claude.ai at 3.3 times the rate its population would predict; West Virginia at a quarter of it. What people use it for barely changes from state to state."
     />
-    <meta
-      property="og:title"
-      content="Fifteen states and D.C. use Claude.ai more than their population predicts"
-    />
+    <meta property="og:title" content="D.C. uses Claude.ai at 13 times West Virginia's rate" />
     <meta
       property="og:description"
-      content="Anthropic Economic Index usage per capita index for the 50 states and D.C., May 2026."
+      content="How much each state uses Claude.ai, and what for. Anthropic Economic Index data for the 50 states and D.C., May 2026."
     />
     <meta property="og:type" content="article" />
     <meta name="color-scheme" content="light dark" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='7' height='7' rx='1.5' fill='%230d366b'/%3E%3Crect x='9' width='7' height='7' rx='1.5' fill='%231c5cab'/%3E%3Crect y='9' width='7' height='7' rx='1.5' fill='%233987e5'/%3E%3Crect x='9' y='9' width='7' height='7' rx='1.5' fill='%2386b6ef'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='7' height='7' rx='1.5' fill='%231c5cab'/%3E%3Crect x='9' width='7' height='7' rx='1.5' fill='%2386b6ef'/%3E%3Crect y='9' width='7' height='7' rx='1.5' fill='%23ea9a93'/%3E%3Crect x='9' y='9' width='7' height='7' rx='1.5' fill='%239e3432'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="assets/style.css" />
     <script
@@ -41,25 +38,39 @@
     <main class="page">
       <header class="masthead">
         <p class="kicker">Claude.ai use by state · May 2026</p>
-        <h1>Fifteen states and D.C. use Claude.ai more than their population predicts</h1>
-        <p class="dek">
-          An index of 1.0 means a state's share of US Claude.ai use equals its share of US working-age people
-          (ages 15 to 64); 2.0 means twice that share.
+        <h1>D.C. uses Claude.ai at 13 times West Virginia's rate</h1>
+        <p class="lede">
+          In May 2026, Washington, D.C., used Claude.ai at 3.3 times the rate its population would predict.
+          West Virginia used it at a quarter of the expected rate.
         </p>
       </header>
 
-      <section class="map-section" aria-labelledby="map-title">
-        <h2 id="map-title" class="section-title">How the 50 states and D.C. rank</h2>
-        <p class="section-note">Usage per capita index, grouped into four bands by rank.</p>
-        <ul class="legend" id="legend" aria-label="Map key"></ul>
+      <section class="story-section" aria-labelledby="map-title">
+        <h2 id="map-title" class="section-title">
+          Fifteen states and D.C. use Claude.ai more than expected. Thirty-four states use it less.
+        </h2>
+        <p class="section-note">
+          An index of 1.0 means a state's share of US Claude.ai use matches its share of US working-age people
+          (ages 15 to 64). Illinois is at exactly 1.0.
+        </p>
+
+        <div class="legend" id="legend" role="group" aria-label="Map key">
+          <div class="legend-ends" aria-hidden="true">
+            <span>Less than expected</span>
+            <span>More than expected</span>
+          </div>
+          <ul class="legend-list" id="legend-list"></ul>
+        </div>
 
         <figure class="map-figure">
           <div class="map-frame" id="map-frame">
             <svg id="map" class="map" role="img" aria-labelledby="map-title"></svg>
-            <div class="tooltip" id="tooltip" aria-hidden="true" hidden></div>
+            <svg class="map-leaders" id="map-leaders" aria-hidden="true"></svg>
+            <div class="map-labels" id="map-labels" aria-hidden="true"></div>
+            <div class="tooltip" id="map-tooltip" aria-hidden="true" hidden></div>
           </div>
           <figcaption class="map-footer">
-            <span class="map-hint">Hover over or tap any state for its value.</span>
+            <span class="hint">Hover over or tap any state for its value.</span>
             <span class="small-states">
               <span class="small-states-label" id="small-states-label">Small states</span>
               <span
@@ -73,7 +84,7 @@
         </figure>
       </section>
 
-      <section class="top-ten" aria-labelledby="top-ten-title">
+      <section class="story-section" aria-labelledby="top-ten-title">
         <h2 id="top-ten-title" class="section-title">D.C. leads at 3.32, more than double any state</h2>
         <p class="section-note">The 10 highest values, counting D.C. The gray line marks 1.0.</p>
         <div class="ranking" id="ranking">
@@ -84,6 +95,51 @@
         </div>
       </section>
 
+      <section class="story-section" aria-labelledby="use-title">
+        <h2 id="use-title" class="section-title">
+          In high-use and low-use states alike, about 4 in 10 conversations are for work
+        </h2>
+        <div class="prose">
+          <p>
+            Anthropic labels a sample of Claude.ai conversations as work, personal use or coursework. In the 15
+            states and D.C. above 1.0, an average of 41% of conversations were for work. In the 34 states below
+            1.0, the average was also 41%. The two ends of the ranking are close too: 44% in D.C. and 41% in
+            West Virginia.
+          </p>
+          <p>
+            Across all 50 states and D.C., the work share stays between 36% (Delaware) and 48% (Florida).
+            States differ far more in how much they use Claude.ai than in what they use it for.
+          </p>
+        </div>
+
+        <figure class="use-figure">
+          <figcaption class="use-caption">
+            <span class="use-caption-title">What conversations were for</span>
+            <span class="use-caption-note"
+              >Average of the states in each group, each state counted equally. Illinois, at 1.0, is in
+              neither.</span
+            >
+          </figcaption>
+          <ul class="use-legend" id="use-legend" aria-label="Key"></ul>
+          <div class="use-frame" id="use-frame">
+            <div class="use-rows" id="use-rows"></div>
+            <div class="tooltip" id="use-tooltip" aria-hidden="true" hidden></div>
+          </div>
+        </figure>
+      </section>
+
+      <aside class="limits" aria-labelledby="limits-title">
+        <h2 id="limits-title" class="limits-title">What this data can't tell us</h2>
+        <ul class="limits-list">
+          <li>
+            It covers Claude.ai only, on the Free, Pro and Max plans. Use through the API or Claude Code is not
+            included.
+          </li>
+          <li>It covers one month, May 2026, so it can't show whether the gap is growing or shrinking.</li>
+          <li>It shows where use is high or low, but it doesn't explain why states differ.</li>
+        </ul>
+      </aside>
+
       <details class="all-states">
         <summary>All 50 states and D.C., ranked</summary>
         <div class="table-scroll">
@@ -93,7 +149,8 @@
                 <th scope="col" class="numeric">Rank</th>
                 <th scope="col">State</th>
                 <th scope="col" class="numeric">Index</th>
-                <th scope="col">Group</th>
+                <th scope="col">Compared with 1.0</th>
+                <th scope="col" class="numeric">For work</th>
               </tr>
             </thead>
             <tbody id="state-table-body"></tbody>
@@ -108,12 +165,13 @@
           Source:
           <a href="https://www.anthropic.com/research/economic-index-june-2026-report"
             >Anthropic Economic Index</a
-          >, Claude.ai data released June 26, 2026, under CC BY. Values cover May 2026 and are rounded to two
-          decimals, so tied states share a rank. The four groups split the 51 ranks as evenly as possible.
+          >, Claude.ai data released June 26, 2026, under CC BY. Values cover May 2026. Index values are
+          rounded to two decimals, so tied states share a rank, and percentages are rounded to whole numbers.
+          The "13 times" in the headline is D.C.'s index (3.32) divided by West Virginia's (0.25).
         </p>
         <p>
           Map shapes: US Census Bureau, via us-atlas.
-          <a href="data/usage-per-capita-2026-05.json">Download the data behind this page</a>
+          <a href="data/claude-ai-by-state-2026-05.json">Download the data behind this page</a>
           (JSON).
         </p>
       </footer>
