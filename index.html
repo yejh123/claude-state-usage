@@ -2,22 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Claude.ai Use by State</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Massachusetts and Claude.ai, Person for Person</title>
     <meta
       name="description"
-      content="Washington, D.C., uses Claude.ai at 3.3 times the rate its population would predict; West Virginia at a quarter of it. What people use it for barely changes from state to state."
+      content="A short scrolling data film: person for person, Massachusetts uses Claude.ai more than 46 other states, and more of it for school. Anthropic Economic Index data for May 2026."
     />
-    <meta property="og:title" content="D.C. uses Claude.ai at 13 times West Virginia's rate" />
+    <meta
+      property="og:title"
+      content="Person for person, Massachusetts talks to Claude more than 46 other states"
+    />
     <meta
       property="og:description"
-      content="How much each state uses Claude.ai, and what for. Anthropic Economic Index data for the 50 states and D.C., May 2026."
+      content="A short scrolling data film about how much Massachusetts uses Claude.ai, and what for. Anthropic Economic Index, May 2026."
     />
     <meta property="og:type" content="article" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#04060b" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='7' height='7' rx='1.5' fill='%231c5cab'/%3E%3Crect x='9' width='7' height='7' rx='1.5' fill='%2386b6ef'/%3E%3Crect y='9' width='7' height='7' rx='1.5' fill='%23ea9a93'/%3E%3Crect x='9' y='9' width='7' height='7' rx='1.5' fill='%239e3432'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%2304060b'/%3E%3Ccircle cx='8' cy='8' r='5' fill='%23ffb048' fill-opacity='.25'/%3E%3Ccircle cx='8' cy='8' r='2.6' fill='%23ffb048'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap"
     />
     <link rel="stylesheet" href="assets/style.css" />
     <script
@@ -32,45 +42,187 @@
       integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="assets/app.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
   </head>
   <body>
-    <main class="page">
-      <header class="masthead">
-        <p class="kicker">Claude.ai use by state · May 2026</p>
-        <h1>D.C. uses Claude.ai at 13 times West Virginia's rate</h1>
-        <p class="lede">
-          In May 2026, Washington, D.C., used Claude.ai at 3.3 times the rate its population would predict.
-          West Virginia used it at a quarter of the expected rate.
+    <a class="skip-link" href="#classic">Skip the film and see every number</a>
+
+    <section class="film" id="film" aria-label="A short scrolling film about Claude.ai use in Massachusetts">
+      <div class="stage" id="stage">
+        <canvas class="stage-canvas" id="stage-canvas" aria-hidden="true"></canvas>
+        <canvas class="stage-still" id="stage-still" aria-hidden="true"></canvas>
+
+        <div class="captions" id="captions">
+          <article class="caption caption--hook" data-caption="hook" data-scene="hook">
+            <p class="caption-label"></p>
+            <h1 class="caption-title" data-part="title">
+              Person for person, Massachusetts talks to Claude more than
+              <span class="num" data-fact="focus_states_below" data-from="10" data-tone="warm">46</span>
+              other states.
+            </h1>
+            <p class="caption-line" data-part="line">Scroll to see how much, and what for.</p>
+            <p class="scroll-cue" data-part="line" aria-hidden="true"><span class="scroll-cue-line"></span>Scroll</p>
+          </article>
+
+          <article class="caption" data-caption="totals" data-scene="fair">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">Big states send the most conversations.</h2>
+            <p class="caption-line" data-part="line">
+              California alone sends about 1 in
+              <span class="num" data-fact="largest_total_one_in" data-tone="neutral">5</span>.
+            </p>
+          </article>
+
+          <article class="caption" data-caption="per-person" data-scene="fair">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">So we count per person.</h2>
+            <p class="caption-line" data-part="line">
+              Texas, third in total, falls below average; Massachusetts climbs to fifth.
+            </p>
+          </article>
+
+          <article class="caption" data-caption="massachusetts" data-scene="massachusetts">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">
+              <span class="num" data-fact="focus_per_100_expected" data-from="100" data-tone="warm">142</span>
+              where you’d expect
+              <span class="num" data-fact="average_per_100" data-tone="cool">100</span>.
+            </h2>
+            <p class="caption-line" data-part="line">
+              Per person, Massachusetts uses Claude.ai
+              <span class="num" data-fact="focus_extra_pct" data-from="10" data-tone="warm">42</span>% more than the
+              US average.
+            </p>
+          </article>
+
+          <article class="caption" data-caption="map" data-scene="map">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">
+              Only
+              <span class="num" data-fact="above_average_state_count" data-from="10" data-tone="warm">15</span>
+              states and D.C. beat the US average.
+            </h2>
+            <p class="caption-line" data-part="line">Massachusetts is one; most of the others are on a coast.</p>
+          </article>
+
+          <article class="caption" data-caption="new-england" data-scene="new-england">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">In New England, nobody comes close.</h2>
+            <p class="caption-line" data-part="line">Only Connecticut is also above the US average.</p>
+          </article>
+
+          <article class="caption" data-caption="skyline" data-scene="skyline">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">Most of the country sits below the average.</h2>
+            <p class="caption-line" data-part="line">A few big, busy states pull it up.</p>
+          </article>
+
+          <article class="caption" data-caption="gap" data-scene="skyline">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">
+              D.C. uses it
+              <span class="num" data-fact="highest_to_lowest_multiple" data-from="10" data-tone="warm">13</span>
+              times as much as West Virginia.
+            </h2>
+            <p class="caption-line" data-part="line">The widest gap between any two places.</p>
+          </article>
+
+          <article class="caption" data-caption="what-for" data-scene="what-for">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">
+              1 in <span class="num" data-fact="focus_schoolwork_one_in" data-tone="warm">8</span> Massachusetts
+              conversations is for schoolwork.
+            </h2>
+            <p class="caption-line" data-part="line">
+              Across the US, it is about 1 in
+              <span class="num" data-fact="us_schoolwork_one_in" data-tone="soft-warm">11</span>.
+            </p>
+          </article>
+
+          <article class="caption" data-caption="school-per-person" data-scene="what-for">
+            <p class="caption-label"></p>
+            <h2 class="caption-title" data-part="title">
+              Per person, about twice as much schoolwork as the US average.
+            </h2>
+            <p class="caption-line" data-part="line">More use, and more of it for school.</p>
+          </article>
+
+          <article class="caption caption--limits" data-caption="limits" data-scene="limits">
+            <p class="caption-label"></p>
+            <p class="caption-limit" data-part="one">Claude.ai only, not the API or Claude Code.</p>
+            <p class="caption-limit" data-part="two">One month: <span data-period>May 2026</span>.</p>
+            <p class="caption-limit" data-part="three">It shows how much and what for, not why.</p>
+          </article>
+        </div>
+
+        <nav class="progress" id="progress" aria-label="Scenes"></nav>
+        <p class="stage-error" id="stage-error" role="alert" hidden></p>
+        <noscript><p class="stage-error">This film needs JavaScript. The numbers are in the source data file.</p></noscript>
+      </div>
+
+      <div class="film-track" id="film-track" aria-hidden="true"></div>
+
+      <div class="credits" id="credits">
+        <div class="credits-roll">
+          <p class="credits-label"><span class="caption-number">09</span>Credits</p>
+          <dl class="credits-list">
+            <div class="credits-item">
+              <dt>Data</dt>
+              <dd>
+                <a href="https://www.anthropic.com/research/economic-index-june-2026-report"
+                  >Anthropic Economic Index</a
+                >
+                <span class="credits-detail">Claude.ai conversations, <span data-period>May 2026</span></span>
+                <span class="credits-detail">Released June 26, 2026</span>
+              </dd>
+            </div>
+            <div class="credits-item">
+              <dt>License</dt>
+              <dd>CC BY</dd>
+            </div>
+            <div class="credits-item">
+              <dt>Built with</dt>
+              <dd>Claude Code</dd>
+            </div>
+            <div class="credits-item">
+              <dt>Map shapes</dt>
+              <dd>US Census Bureau, via us-atlas</dd>
+            </div>
+          </dl>
+          <a class="credits-next" href="#classic">Every number, in the classic view</a>
+        </div>
+      </div>
+    </section>
+
+    <main class="classic" id="classic" aria-labelledby="classic-title" tabindex="-1">
+      <header class="classic-header">
+        <p class="kicker">Classic view</p>
+        <h2 id="classic-title">Every number behind the film</h2>
+        <p class="dek">
+          For each state, we compare its share of US Claude.ai conversations with its share of US residents aged
+          15 to 64. A state at the US average rate sends 100 conversations for every 100 you would expect from its
+          population. Massachusetts sends
+          <span data-state="MA" data-field="per_100_expected">142</span>.
         </p>
       </header>
 
-      <section class="story-section" aria-labelledby="map-title">
-        <h2 id="map-title" class="section-title">
-          Fifteen states and D.C. use Claude.ai more than expected. Thirty-four states use it less.
-        </h2>
+      <section class="classic-section" aria-labelledby="map-title">
+        <h3 id="map-title" class="section-title">
+          Only <span data-fact="above_average_state_count">15</span> states and D.C. beat the US average
+        </h3>
         <p class="section-note">
-          An index of 1.0 means a state's share of US Claude.ai use matches its share of US working-age people
-          (ages 15 to 64). Illinois is at exactly 1.0.
+          Conversations per 100 expected, <span data-period>May 2026</span>. Warm states are above the US average,
+          cool states below it; the further from average, the stronger the color.
         </p>
-
-        <div class="legend" id="legend" role="group" aria-label="Map key">
-          <div class="legend-ends" aria-hidden="true">
-            <span>Less than expected</span>
-            <span>More than expected</span>
-          </div>
-          <ul class="legend-list" id="legend-list"></ul>
-        </div>
+        <div class="legend" id="legend"></div>
 
         <figure class="map-figure">
           <div class="map-frame" id="map-frame">
             <svg id="map" class="map" role="img" aria-labelledby="map-title"></svg>
-            <svg class="map-leaders" id="map-leaders" aria-hidden="true"></svg>
-            <div class="map-labels" id="map-labels" aria-hidden="true"></div>
-            <div class="tooltip" id="map-tooltip" aria-hidden="true" hidden></div>
+            <div class="tooltip" id="tooltip" aria-hidden="true" hidden></div>
           </div>
           <figcaption class="map-footer">
-            <span class="hint">Hover over or tap any state for its value.</span>
+            <span class="map-hint">Hover over or tap any state for its number. Massachusetts has the white outline.</span>
             <span class="small-states">
               <span class="small-states-label" id="small-states-label">Small states</span>
               <span
@@ -84,9 +236,12 @@
         </figure>
       </section>
 
-      <section class="story-section" aria-labelledby="top-ten-title">
-        <h2 id="top-ten-title" class="section-title">D.C. leads at 3.32, more than double any state</h2>
-        <p class="section-note">The 10 highest values, counting D.C. The gray line marks 1.0.</p>
+      <section class="classic-section" aria-labelledby="top-ten-title">
+        <h3 id="top-ten-title" class="section-title">
+          D.C. leads with <span data-state="DC" data-field="per_100_expected">332</span>, more than double any
+          state
+        </h3>
+        <p class="section-note">The 10 highest, counting D.C. The line marks 100, the US average.</p>
         <div class="ranking" id="ranking">
           <div class="ranking-axis" aria-hidden="true">
             <span class="ranking-axis-track"><span class="ranking-axis-label"></span></span>
@@ -95,84 +250,68 @@
         </div>
       </section>
 
-      <section class="story-section" aria-labelledby="use-title">
-        <h2 id="use-title" class="section-title">
-          In high-use and low-use states alike, about 4 in 10 conversations are for work
-        </h2>
-        <div class="prose">
-          <p>
-            Anthropic labels a sample of Claude.ai conversations as work, personal use or coursework. In the 15
-            states and D.C. above 1.0, an average of 41% of conversations were for work. In the 34 states below
-            1.0, the average was also 41%. The two ends of the ranking are close too: 44% in D.C. and 41% in
-            West Virginia.
-          </p>
-          <p>
-            Across all 50 states and D.C., the work share stays between 36% (Delaware) and 48% (Florida).
-            States differ far more in how much they use Claude.ai than in what they use it for.
-          </p>
-        </div>
-
-        <figure class="use-figure">
-          <figcaption class="use-caption">
-            <span class="use-caption-title">What conversations were for</span>
-            <span class="use-caption-note"
-              >Average of the states in each group, each state counted equally. Illinois, at 1.0, is in
-              neither.</span
-            >
-          </figcaption>
-          <ul class="use-legend" id="use-legend" aria-label="Key"></ul>
-          <div class="use-frame" id="use-frame">
-            <div class="use-rows" id="use-rows"></div>
-            <div class="tooltip" id="use-tooltip" aria-hidden="true" hidden></div>
-          </div>
-        </figure>
-      </section>
-
-      <aside class="limits" aria-labelledby="limits-title">
-        <h2 id="limits-title" class="limits-title">What this data can't tell us</h2>
-        <ul class="limits-list">
-          <li>
-            It covers Claude.ai only, on the Free, Pro and Max plans. Use through the API or Claude Code is not
-            included.
-          </li>
-          <li>It covers one month, May 2026, so it can't show whether the gap is growing or shrinking.</li>
-          <li>It shows where use is high or low, but it doesn't explain why states differ.</li>
-        </ul>
-      </aside>
-
-      <details class="all-states">
-        <summary>All 50 states and D.C., ranked</summary>
+      <section class="classic-section" aria-labelledby="what-for-title">
+        <h3 id="what-for-title" class="section-title">What Massachusetts uses it for</h3>
+        <p class="section-note">
+          Share of conversations about work, personal life and schoolwork, <span data-period>May 2026</span>.
+        </p>
         <div class="table-scroll">
-          <table class="state-table">
+          <table class="compare-table">
             <thead>
               <tr>
-                <th scope="col" class="numeric">Rank</th>
-                <th scope="col">State</th>
-                <th scope="col" class="numeric">Index</th>
-                <th scope="col">Compared with 1.0</th>
-                <th scope="col" class="numeric">For work</th>
+                <th scope="col"><span class="visually-hidden">Purpose</span></th>
+                <th scope="col" class="numeric">Massachusetts</th>
+                <th scope="col" class="numeric">Whole US</th>
               </tr>
             </thead>
-            <tbody id="state-table-body"></tbody>
+            <tbody id="use-case-body"></tbody>
           </table>
         </div>
-      </details>
+      </section>
+
+      <section class="classic-section" aria-labelledby="all-states-title">
+        <details class="all-states">
+          <summary id="all-states-title">All 50 states and D.C., ranked</summary>
+          <div class="table-scroll">
+            <table class="state-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="numeric">Rank</th>
+                  <th scope="col">State</th>
+                  <th scope="col" class="numeric">Per 100 expected</th>
+                  <th scope="col" class="numeric">Share of US conversations</th>
+                  <th scope="col" class="numeric">Share of US residents 15 to 64 (estimated)</th>
+                  <th scope="col" class="numeric">Share for schoolwork</th>
+                </tr>
+              </thead>
+              <tbody id="state-table-body"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <section class="classic-section limits" aria-labelledby="limits-title">
+        <h3 id="limits-title" class="section-title">What this data cannot tell you</h3>
+        <ul class="limits-list">
+          <li>It covers Claude.ai only (Free, Pro and Max plans), not the API or Claude Code.</li>
+          <li>It covers one month: <span data-period>May 2026</span>.</li>
+          <li>It shows how much people use Claude.ai and what for, not why.</li>
+        </ul>
+      </section>
 
       <p class="load-error" id="load-error" role="alert" hidden></p>
 
       <footer class="source">
         <p>
           Source:
-          <a href="https://www.anthropic.com/research/economic-index-june-2026-report"
-            >Anthropic Economic Index</a
-          >, Claude.ai data released June 26, 2026, under CC BY. Values cover May 2026. Index values are
-          rounded to two decimals, so tied states share a rank, and percentages are rounded to whole numbers.
-          The "13 times" in the headline is D.C.'s index (3.32) divided by West Virginia's (0.25).
+          <a href="https://www.anthropic.com/research/economic-index-june-2026-report">Anthropic Economic Index</a>,
+          Claude.ai data released June 26, 2026, under CC BY. Anthropic publishes each value rounded to two
+          decimals. Shares of residents are estimated from those rounded values, so they are approximate. A
+          “person” here means a resident aged 15 to 64.
         </p>
         <p>
-          Map shapes: US Census Bureau, via us-atlas.
-          <a href="data/claude-ai-by-state-2026-05.json">Download the data behind this page</a>
-          (JSON).
+          Built with Claude Code. Map shapes: US Census Bureau, via us-atlas.
+          <a href="data/usage-per-capita-2026-05.json">Download the data behind this page</a> (JSON).
         </p>
       </footer>
     </main>

@@ -1,0 +1,881 @@
+{
+  "period": {
+    "start": "2026-05-01",
+    "end_exclusive": "2026-06-01",
+    "label": "May 2026"
+  },
+  "source": {
+    "name": "Anthropic Economic Index",
+    "dataset": "Claude.ai usage (Free, Pro and Max plans)",
+    "release_date": "2026-06-26",
+    "file": "aei_claude_ai_2026-06-26.csv",
+    "license": "CC BY",
+    "url": "https://www.anthropic.com/research/economic-index-june-2026-report"
+  },
+  "us": {
+    "use_case_pct": {
+      "work": 41.32,
+      "personal": 49.74,
+      "coursework": 8.94
+    }
+  },
+  "film": {
+    "focus_code": "MA",
+    "average_per_100": 100,
+    "focus_states_below": 46,
+    "focus_per_100_expected": 142,
+    "focus_extra_pct": 42,
+    "largest_total_code": "CA",
+    "largest_total_one_in": 5,
+    "above_average_state_count": 15,
+    "new_england_codes": [
+      "MA",
+      "CT",
+      "RI",
+      "NH",
+      "VT",
+      "ME"
+    ],
+    "highest_code": "DC",
+    "lowest_code": "WV",
+    "highest_to_lowest_multiple": 13,
+    "focus_schoolwork_one_in": 8,
+    "us_schoolwork_one_in": 11,
+    "focus_schoolwork_per_person_multiple": 1.98,
+    "dots": {
+      "focus_100": {
+        "work": 39,
+        "personal": 48,
+        "coursework": 13
+      },
+      "focus_per_person": {
+        "work": 55,
+        "personal": 69,
+        "coursework": 18
+      },
+      "us_100": {
+        "work": 41,
+        "personal": 50,
+        "coursework": 9
+      }
+    }
+  },
+  "states": [
+    {
+      "code": "DC",
+      "name": "District of Columbia",
+      "fips": "11",
+      "per_capita_index": 3.32,
+      "per_100_expected": 332,
+      "rank_per_person": 1,
+      "usage_share_pct": 0.76,
+      "rank_total": 28,
+      "working_age_share_pct": 0.229,
+      "use_case_pct": {
+        "work": 44.42,
+        "personal": 42.68,
+        "coursework": 12.9
+      }
+    },
+    {
+      "code": "CA",
+      "name": "California",
+      "fips": "06",
+      "per_capita_index": 1.62,
+      "per_100_expected": 162,
+      "rank_per_person": 2,
+      "usage_share_pct": 19.25,
+      "rank_total": 1,
+      "working_age_share_pct": 11.883,
+      "use_case_pct": {
+        "work": 41.52,
+        "personal": 47.77,
+        "coursework": 10.7
+      }
+    },
+    {
+      "code": "NY",
+      "name": "New York",
+      "fips": "36",
+      "per_capita_index": 1.55,
+      "per_100_expected": 155,
+      "rank_per_person": 3,
+      "usage_share_pct": 9.08,
+      "rank_total": 2,
+      "working_age_share_pct": 5.858,
+      "use_case_pct": {
+        "work": 40.21,
+        "personal": 49.31,
+        "coursework": 10.48
+      }
+    },
+    {
+      "code": "WA",
+      "name": "Washington",
+      "fips": "53",
+      "per_capita_index": 1.51,
+      "per_100_expected": 151,
+      "rank_per_person": 4,
+      "usage_share_pct": 3.57,
+      "rank_total": 6,
+      "working_age_share_pct": 2.364,
+      "use_case_pct": {
+        "work": 36.22,
+        "personal": 54.28,
+        "coursework": 9.5
+      }
+    },
+    {
+      "code": "MA",
+      "name": "Massachusetts",
+      "fips": "25",
+      "per_capita_index": 1.42,
+      "per_100_expected": 142,
+      "rank_per_person": 5,
+      "usage_share_pct": 3.05,
+      "rank_total": 8,
+      "working_age_share_pct": 2.148,
+      "use_case_pct": {
+        "work": 39.05,
+        "personal": 48.46,
+        "coursework": 12.48
+      }
+    },
+    {
+      "code": "CO",
+      "name": "Colorado",
+      "fips": "08",
+      "per_capita_index": 1.41,
+      "per_100_expected": 141,
+      "rank_per_person": 6,
+      "usage_share_pct": 2.56,
+      "rank_total": 13,
+      "working_age_share_pct": 1.816,
+      "use_case_pct": {
+        "work": 43.88,
+        "personal": 50.67,
+        "coursework": 5.46
+      }
+    },
+    {
+      "code": "UT",
+      "name": "Utah",
+      "fips": "49",
+      "per_capita_index": 1.21,
+      "per_100_expected": 121,
+      "rank_per_person": 7,
+      "usage_share_pct": 1.28,
+      "rank_total": 21,
+      "working_age_share_pct": 1.058,
+      "use_case_pct": {
+        "work": 44.27,
+        "personal": 50.85,
+        "coursework": 4.88
+      }
+    },
+    {
+      "code": "HI",
+      "name": "Hawaii",
+      "fips": "15",
+      "per_capita_index": 1.14,
+      "per_100_expected": 114,
+      "rank_per_person": 8,
+      "usage_share_pct": 0.45,
+      "rank_total": 33,
+      "working_age_share_pct": 0.395,
+      "use_case_pct": {
+        "work": 42.4,
+        "personal": 50.88,
+        "coursework": 6.72
+      }
+    },
+    {
+      "code": "NV",
+      "name": "Nevada",
+      "fips": "32",
+      "per_capita_index": 1.13,
+      "per_100_expected": 113,
+      "rank_per_person": 9,
+      "usage_share_pct": 1.1,
+      "rank_total": 25,
+      "working_age_share_pct": 0.973,
+      "use_case_pct": {
+        "work": 43.21,
+        "personal": 48.98,
+        "coursework": 7.81
+      }
+    },
+    {
+      "code": "OR",
+      "name": "Oregon",
+      "fips": "41",
+      "per_capita_index": 1.1,
+      "per_100_expected": 110,
+      "rank_per_person": 10,
+      "usage_share_pct": 1.39,
+      "rank_total": 19,
+      "working_age_share_pct": 1.264,
+      "use_case_pct": {
+        "work": 37.82,
+        "personal": 52.87,
+        "coursework": 9.3
+      }
+    },
+    {
+      "code": "MD",
+      "name": "Maryland",
+      "fips": "24",
+      "per_capita_index": 1.09,
+      "per_100_expected": 109,
+      "rank_per_person": 11,
+      "usage_share_pct": 2.0,
+      "rank_total": 16,
+      "working_age_share_pct": 1.835,
+      "use_case_pct": {
+        "work": 39.83,
+        "personal": 49.56,
+        "coursework": 10.61
+      }
+    },
+    {
+      "code": "CT",
+      "name": "Connecticut",
+      "fips": "09",
+      "per_capita_index": 1.07,
+      "per_100_expected": 107,
+      "rank_per_person": 12,
+      "usage_share_pct": 1.16,
+      "rank_total": 24,
+      "working_age_share_pct": 1.084,
+      "use_case_pct": {
+        "work": 38.93,
+        "personal": 50.36,
+        "coursework": 10.7
+      }
+    },
+    {
+      "code": "VA",
+      "name": "Virginia",
+      "fips": "51",
+      "per_capita_index": 1.07,
+      "per_100_expected": 107,
+      "rank_per_person": 12,
+      "usage_share_pct": 2.76,
+      "rank_total": 12,
+      "working_age_share_pct": 2.579,
+      "use_case_pct": {
+        "work": 40.13,
+        "personal": 49.59,
+        "coursework": 10.28
+      }
+    },
+    {
+      "code": "DE",
+      "name": "Delaware",
+      "fips": "10",
+      "per_capita_index": 1.05,
+      "per_100_expected": 105,
+      "rank_per_person": 14,
+      "usage_share_pct": 0.31,
+      "rank_total": 41,
+      "working_age_share_pct": 0.295,
+      "use_case_pct": {
+        "work": 35.87,
+        "personal": 55.22,
+        "coursework": 8.91
+      }
+    },
+    {
+      "code": "FL",
+      "name": "Florida",
+      "fips": "12",
+      "per_capita_index": 1.05,
+      "per_100_expected": 105,
+      "rank_per_person": 14,
+      "usage_share_pct": 7.01,
+      "rank_total": 4,
+      "working_age_share_pct": 6.676,
+      "use_case_pct": {
+        "work": 47.88,
+        "personal": 46.61,
+        "coursework": 5.51
+      }
+    },
+    {
+      "code": "NJ",
+      "name": "New Jersey",
+      "fips": "34",
+      "per_capita_index": 1.02,
+      "per_100_expected": 102,
+      "rank_per_person": 16,
+      "usage_share_pct": 2.85,
+      "rank_total": 10,
+      "working_age_share_pct": 2.794,
+      "use_case_pct": {
+        "work": 41.66,
+        "personal": 48.55,
+        "coursework": 9.79
+      }
+    },
+    {
+      "code": "IL",
+      "name": "Illinois",
+      "fips": "17",
+      "per_capita_index": 1.0,
+      "per_100_expected": 100,
+      "rank_per_person": 17,
+      "usage_share_pct": 3.79,
+      "rank_total": 5,
+      "working_age_share_pct": 3.79,
+      "use_case_pct": {
+        "work": 37.89,
+        "personal": 50.62,
+        "coursework": 11.49
+      }
+    },
+    {
+      "code": "RI",
+      "name": "Rhode Island",
+      "fips": "44",
+      "per_capita_index": 0.96,
+      "per_100_expected": 96,
+      "rank_per_person": 18,
+      "usage_share_pct": 0.32,
+      "rank_total": 40,
+      "working_age_share_pct": 0.333,
+      "use_case_pct": {
+        "work": 40.16,
+        "personal": 46.28,
+        "coursework": 13.55
+      }
+    },
+    {
+      "code": "AZ",
+      "name": "Arizona",
+      "fips": "04",
+      "per_capita_index": 0.95,
+      "per_100_expected": 95,
+      "rank_per_person": 19,
+      "usage_share_pct": 2.08,
+      "rank_total": 14,
+      "working_age_share_pct": 2.189,
+      "use_case_pct": {
+        "work": 43.76,
+        "personal": 49.09,
+        "coursework": 7.15
+      }
+    },
+    {
+      "code": "TX",
+      "name": "Texas",
+      "fips": "48",
+      "per_capita_index": 0.95,
+      "per_100_expected": 95,
+      "rank_per_person": 19,
+      "usage_share_pct": 8.91,
+      "rank_total": 3,
+      "working_age_share_pct": 9.379,
+      "use_case_pct": {
+        "work": 43.16,
+        "personal": 49.66,
+        "coursework": 7.18
+      }
+    },
+    {
+      "code": "GA",
+      "name": "Georgia",
+      "fips": "13",
+      "per_capita_index": 0.93,
+      "per_100_expected": 93,
+      "rank_per_person": 21,
+      "usage_share_pct": 3.12,
+      "rank_total": 7,
+      "working_age_share_pct": 3.355,
+      "use_case_pct": {
+        "work": 43.21,
+        "personal": 49.81,
+        "coursework": 6.98
+      }
+    },
+    {
+      "code": "NH",
+      "name": "New Hampshire",
+      "fips": "33",
+      "per_capita_index": 0.88,
+      "per_100_expected": 88,
+      "rank_per_person": 22,
+      "usage_share_pct": 0.36,
+      "rank_total": 37,
+      "working_age_share_pct": 0.409,
+      "use_case_pct": {
+        "work": 40.02,
+        "personal": 47.84,
+        "coursework": 12.14
+      }
+    },
+    {
+      "code": "NC",
+      "name": "North Carolina",
+      "fips": "37",
+      "per_capita_index": 0.88,
+      "per_100_expected": 88,
+      "rank_per_person": 22,
+      "usage_share_pct": 2.85,
+      "rank_total": 10,
+      "working_age_share_pct": 3.239,
+      "use_case_pct": {
+        "work": 41.5,
+        "personal": 51.3,
+        "coursework": 7.2
+      }
+    },
+    {
+      "code": "VT",
+      "name": "Vermont",
+      "fips": "50",
+      "per_capita_index": 0.87,
+      "per_100_expected": 87,
+      "rank_per_person": 24,
+      "usage_share_pct": 0.16,
+      "rank_total": 46,
+      "working_age_share_pct": 0.184,
+      "use_case_pct": {
+        "work": 41.11,
+        "personal": 47.64,
+        "coursework": 11.25
+      }
+    },
+    {
+      "code": "MN",
+      "name": "Minnesota",
+      "fips": "27",
+      "per_capita_index": 0.81,
+      "per_100_expected": 81,
+      "rank_per_person": 25,
+      "usage_share_pct": 1.37,
+      "rank_total": 20,
+      "working_age_share_pct": 1.691,
+      "use_case_pct": {
+        "work": 38.24,
+        "personal": 54.14,
+        "coursework": 7.62
+      }
+    },
+    {
+      "code": "PA",
+      "name": "Pennsylvania",
+      "fips": "42",
+      "per_capita_index": 0.8,
+      "per_100_expected": 80,
+      "rank_per_person": 26,
+      "usage_share_pct": 3.01,
+      "rank_total": 9,
+      "working_age_share_pct": 3.762,
+      "use_case_pct": {
+        "work": 38.07,
+        "personal": 51.75,
+        "coursework": 10.18
+      }
+    },
+    {
+      "code": "MO",
+      "name": "Missouri",
+      "fips": "29",
+      "per_capita_index": 0.7,
+      "per_100_expected": 70,
+      "rank_per_person": 27,
+      "usage_share_pct": 1.26,
+      "rank_total": 22,
+      "working_age_share_pct": 1.8,
+      "use_case_pct": {
+        "work": 40.81,
+        "personal": 52.6,
+        "coursework": 6.59
+      }
+    },
+    {
+      "code": "TN",
+      "name": "Tennessee",
+      "fips": "47",
+      "per_capita_index": 0.69,
+      "per_100_expected": 69,
+      "rank_per_person": 28,
+      "usage_share_pct": 1.46,
+      "rank_total": 18,
+      "working_age_share_pct": 2.116,
+      "use_case_pct": {
+        "work": 43.56,
+        "personal": 50.67,
+        "coursework": 5.77
+      }
+    },
+    {
+      "code": "ID",
+      "name": "Idaho",
+      "fips": "16",
+      "per_capita_index": 0.68,
+      "per_100_expected": 68,
+      "rank_per_person": 29,
+      "usage_share_pct": 0.39,
+      "rank_total": 35,
+      "working_age_share_pct": 0.574,
+      "use_case_pct": {
+        "work": 44.48,
+        "personal": 48.76,
+        "coursework": 6.76
+      }
+    },
+    {
+      "code": "ME",
+      "name": "Maine",
+      "fips": "23",
+      "per_capita_index": 0.65,
+      "per_100_expected": 65,
+      "rank_per_person": 30,
+      "usage_share_pct": 0.26,
+      "rank_total": 43,
+      "working_age_share_pct": 0.4,
+      "use_case_pct": {
+        "work": 39.89,
+        "personal": 51.34,
+        "coursework": 8.78
+      }
+    },
+    {
+      "code": "NE",
+      "name": "Nebraska",
+      "fips": "31",
+      "per_capita_index": 0.63,
+      "per_100_expected": 63,
+      "rank_per_person": 31,
+      "usage_share_pct": 0.36,
+      "rank_total": 37,
+      "working_age_share_pct": 0.571,
+      "use_case_pct": {
+        "work": 37.96,
+        "personal": 54.72,
+        "coursework": 7.32
+      }
+    },
+    {
+      "code": "IN",
+      "name": "Indiana",
+      "fips": "18",
+      "per_capita_index": 0.61,
+      "per_100_expected": 61,
+      "rank_per_person": 32,
+      "usage_share_pct": 1.23,
+      "rank_total": 23,
+      "working_age_share_pct": 2.016,
+      "use_case_pct": {
+        "work": 37.21,
+        "personal": 51.29,
+        "coursework": 11.5
+      }
+    },
+    {
+      "code": "MI",
+      "name": "Michigan",
+      "fips": "26",
+      "per_capita_index": 0.61,
+      "per_100_expected": 61,
+      "rank_per_person": 32,
+      "usage_share_pct": 1.81,
+      "rank_total": 17,
+      "working_age_share_pct": 2.967,
+      "use_case_pct": {
+        "work": 40.0,
+        "personal": 53.28,
+        "coursework": 6.72
+      }
+    },
+    {
+      "code": "OH",
+      "name": "Ohio",
+      "fips": "39",
+      "per_capita_index": 0.59,
+      "per_100_expected": 59,
+      "rank_per_person": 34,
+      "usage_share_pct": 2.02,
+      "rank_total": 15,
+      "working_age_share_pct": 3.424,
+      "use_case_pct": {
+        "work": 39.95,
+        "personal": 52.75,
+        "coursework": 7.29
+      }
+    },
+    {
+      "code": "WI",
+      "name": "Wisconsin",
+      "fips": "55",
+      "per_capita_index": 0.59,
+      "per_100_expected": 59,
+      "rank_per_person": 34,
+      "usage_share_pct": 1.02,
+      "rank_total": 26,
+      "working_age_share_pct": 1.729,
+      "use_case_pct": {
+        "work": 35.89,
+        "personal": 54.17,
+        "coursework": 9.94
+      }
+    },
+    {
+      "code": "MT",
+      "name": "Montana",
+      "fips": "30",
+      "per_capita_index": 0.58,
+      "per_100_expected": 58,
+      "rank_per_person": 36,
+      "usage_share_pct": 0.19,
+      "rank_total": 45,
+      "working_age_share_pct": 0.328,
+      "use_case_pct": {
+        "work": 46.11,
+        "personal": 47.99,
+        "coursework": 5.9
+      }
+    },
+    {
+      "code": "OK",
+      "name": "Oklahoma",
+      "fips": "40",
+      "per_capita_index": 0.53,
+      "per_100_expected": 53,
+      "rank_per_person": 37,
+      "usage_share_pct": 0.63,
+      "rank_total": 31,
+      "working_age_share_pct": 1.189,
+      "use_case_pct": {
+        "work": 38.58,
+        "personal": 54.0,
+        "coursework": 7.42
+      }
+    },
+    {
+      "code": "AK",
+      "name": "Alaska",
+      "fips": "02",
+      "per_capita_index": 0.51,
+      "per_100_expected": 51,
+      "rank_per_person": 38,
+      "usage_share_pct": 0.11,
+      "rank_total": 48,
+      "working_age_share_pct": 0.216,
+      "use_case_pct": {
+        "work": 41.64,
+        "personal": 54.88,
+        "coursework": 3.48
+      }
+    },
+    {
+      "code": "SC",
+      "name": "South Carolina",
+      "fips": "45",
+      "per_capita_index": 0.51,
+      "per_100_expected": 51,
+      "rank_per_person": 38,
+      "usage_share_pct": 0.8,
+      "rank_total": 27,
+      "working_age_share_pct": 1.569,
+      "use_case_pct": {
+        "work": 47.05,
+        "personal": 47.67,
+        "coursework": 5.28
+      }
+    },
+    {
+      "code": "NM",
+      "name": "New Mexico",
+      "fips": "35",
+      "per_capita_index": 0.49,
+      "per_100_expected": 49,
+      "rank_per_person": 40,
+      "usage_share_pct": 0.3,
+      "rank_total": 42,
+      "working_age_share_pct": 0.612,
+      "use_case_pct": {
+        "work": 38.36,
+        "personal": 52.89,
+        "coursework": 8.75
+      }
+    },
+    {
+      "code": "KS",
+      "name": "Kansas",
+      "fips": "20",
+      "per_capita_index": 0.48,
+      "per_100_expected": 48,
+      "rank_per_person": 41,
+      "usage_share_pct": 0.41,
+      "rank_total": 34,
+      "working_age_share_pct": 0.854,
+      "use_case_pct": {
+        "work": 37.22,
+        "personal": 53.07,
+        "coursework": 9.71
+      }
+    },
+    {
+      "code": "LA",
+      "name": "Louisiana",
+      "fips": "22",
+      "per_capita_index": 0.48,
+      "per_100_expected": 48,
+      "rank_per_person": 41,
+      "usage_share_pct": 0.64,
+      "rank_total": 30,
+      "working_age_share_pct": 1.333,
+      "use_case_pct": {
+        "work": 40.66,
+        "personal": 50.4,
+        "coursework": 8.94
+      }
+    },
+    {
+      "code": "AL",
+      "name": "Alabama",
+      "fips": "01",
+      "per_capita_index": 0.47,
+      "per_100_expected": 47,
+      "rank_per_person": 43,
+      "usage_share_pct": 0.71,
+      "rank_total": 29,
+      "working_age_share_pct": 1.511,
+      "use_case_pct": {
+        "work": 40.57,
+        "personal": 53.81,
+        "coursework": 5.62
+      }
+    },
+    {
+      "code": "WY",
+      "name": "Wyoming",
+      "fips": "56",
+      "per_capita_index": 0.43,
+      "per_100_expected": 43,
+      "rank_per_person": 44,
+      "usage_share_pct": 0.07,
+      "rank_total": 51,
+      "working_age_share_pct": 0.163,
+      "use_case_pct": {
+        "work": 39.26,
+        "personal": 53.47,
+        "coursework": 7.28
+      }
+    },
+    {
+      "code": "IA",
+      "name": "Iowa",
+      "fips": "19",
+      "per_capita_index": 0.41,
+      "per_100_expected": 41,
+      "rank_per_person": 45,
+      "usage_share_pct": 0.38,
+      "rank_total": 36,
+      "working_age_share_pct": 0.927,
+      "use_case_pct": {
+        "work": 37.65,
+        "personal": 47.73,
+        "coursework": 14.61
+      }
+    },
+    {
+      "code": "AR",
+      "name": "Arkansas",
+      "fips": "05",
+      "per_capita_index": 0.39,
+      "per_100_expected": 39,
+      "rank_per_person": 46,
+      "usage_share_pct": 0.35,
+      "rank_total": 39,
+      "working_age_share_pct": 0.897,
+      "use_case_pct": {
+        "work": 41.16,
+        "personal": 52.53,
+        "coursework": 6.31
+      }
+    },
+    {
+      "code": "KY",
+      "name": "Kentucky",
+      "fips": "21",
+      "per_capita_index": 0.39,
+      "per_100_expected": 39,
+      "rank_per_person": 46,
+      "usage_share_pct": 0.51,
+      "rank_total": 32,
+      "working_age_share_pct": 1.308,
+      "use_case_pct": {
+        "work": 40.04,
+        "personal": 53.2,
+        "coursework": 6.76
+      }
+    },
+    {
+      "code": "ND",
+      "name": "North Dakota",
+      "fips": "38",
+      "per_capita_index": 0.37,
+      "per_100_expected": 37,
+      "rank_per_person": 48,
+      "usage_share_pct": 0.09,
+      "rank_total": 50,
+      "working_age_share_pct": 0.243,
+      "use_case_pct": {
+        "work": 38.33,
+        "personal": 49.71,
+        "coursework": 11.96
+      }
+    },
+    {
+      "code": "SD",
+      "name": "South Dakota",
+      "fips": "46",
+      "per_capita_index": 0.37,
+      "per_100_expected": 37,
+      "rank_per_person": 48,
+      "usage_share_pct": 0.1,
+      "rank_total": 49,
+      "working_age_share_pct": 0.27,
+      "use_case_pct": {
+        "work": 45.78,
+        "personal": 45.78,
+        "coursework": 8.45
+      }
+    },
+    {
+      "code": "MS",
+      "name": "Mississippi",
+      "fips": "28",
+      "per_capita_index": 0.28,
+      "per_100_expected": 28,
+      "rank_per_person": 50,
+      "usage_share_pct": 0.24,
+      "rank_total": 44,
+      "working_age_share_pct": 0.857,
+      "use_case_pct": {
+        "work": 41.08,
+        "personal": 49.51,
+        "coursework": 9.4
+      }
+    },
+    {
+      "code": "WV",
+      "name": "West Virginia",
+      "fips": "54",
+      "per_capita_index": 0.25,
+      "per_100_expected": 25,
+      "rank_per_person": 51,
+      "usage_share_pct": 0.13,
+      "rank_total": 47,
+      "working_age_share_pct": 0.52,
+      "use_case_pct": {
+        "work": 40.85,
+        "personal": 50.24,
+        "coursework": 8.91
+      }
+    }
+  ]
+}
