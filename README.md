@@ -27,7 +27,6 @@ The published values are rounded to two decimals, so some states tie. Tied state
 | `data/usage-per-capita-2026-05.json` | The 51 values the page uses (8 KB)               |
 | `data/AEI_DATA_README.md`            | Anthropic's documentation for the source dataset |
 | `scripts/build_data.py`              | Builds the JSON file from the full CSV           |
-| `prompt.md`                          | The assignment brief                             |
 
 The full source CSV (`aei_claude_ai_2026-06-26.csv`, about 220 MB) is too big for GitHub, so `.gitignore` keeps it out of the repository.
 
